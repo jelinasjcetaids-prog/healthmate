@@ -1,0 +1,1547 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HealthMate — Your Inclusive Health Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    /* ─── CSS VARIABLES ─────────────────────────────────────── */
+    :root {
+      --primary:    #1A6FBF;
+      --primary-dk: #0f4e8a;
+      --accent:     #00C9A7;
+      --accent2:    #FF6B6B;
+      --bg:         #F4F8FF;
+      --surface:    #FFFFFF;
+      --surface2:   #EAF2FF;
+      --text:       #1C2B3A;
+      --text-soft:  #5A7390;
+      --border:     #D6E4F5;
+      --shadow:     0 4px 28px rgba(26,111,191,.10);
+      --radius:     16px;
+      --transition: .28s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; line-height: 1.25; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 99px; }
+
+    /* ─── UTILITY ───────────────────────────────────────────── */
+    .section-label {
+      display: inline-block;
+      background: var(--surface2);
+      color: var(--primary);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+      margin-bottom: 14px;
+    }
+    .section-title { font-size: clamp(1.6rem,3.5vw,2.5rem); color: var(--text); }
+    .section-sub   { color: var(--text-soft); font-size: 1rem; max-width: 560px; }
+    .btn-primary-custom {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 13px 30px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-custom:hover { background: var(--primary-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,111,191,.25); color: #fff; }
+    .btn-accent-custom {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 30px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-accent-custom:hover { background: #00a88d; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,201,167,.25); }
+    .card-glass {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    .card-glass:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,111,191,.14); }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    .navbar-custom {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      transition: var(--transition);
+    }
+    .navbar-custom .brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--primary);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .brand-dot { width: 9px; height: 9px; background: var(--accent); border-radius: 50%; display: inline-block; }
+    .nav-link-custom {
+      color: var(--text-soft);
+      font-weight: 500;
+      font-size: .9rem;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    .nav-link-custom:hover, .nav-link-custom.active { color: var(--primary); background: var(--surface2); }
+    .lang-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lang-btn.active { background: var(--primary); color: #fff; }
+    .lang-btn:hover { background: var(--primary); color: #fff; }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      padding-top: 90px;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 20%, rgba(26,111,191,.09) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(0,201,167,.07) 0%, transparent 55%),
+        var(--bg);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-badge {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      padding: 5px 16px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .hero-title { font-size: clamp(2.2rem,5.5vw,3.8rem); color: var(--text); line-height: 1.15; }
+    .hero-title span { color: var(--primary); }
+    .hero-sub { font-size: 1.1rem; color: var(--text-soft); margin: 20px 0 36px; max-width: 540px; }
+    .hero-stats { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 44px; }
+    .stat-box { text-align: center; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); }
+    .stat-lbl { font-size: .78rem; color: var(--text-soft); font-weight: 600; letter-spacing: .05em; }
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card-float {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 22px 26px;
+      box-shadow: var(--shadow);
+      animation: float 4s ease-in-out infinite;
+      max-width: 280px;
+    }
+    .hero-card-float:nth-child(2) { animation-delay: -2s; margin-top: 28px; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .pulse-dot {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s ease infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.6} }
+    .health-ring {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0% 72%, var(--border) 72%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin: 0 auto;
+    }
+    .health-ring::before {
+      content: '';
+      position: absolute; inset: 14px;
+      background: var(--surface);
+      border-radius: 50%;
+    }
+    .ring-inner { position: relative; z-index: 1; text-align: center; }
+    .ring-score { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: var(--primary); }
+
+    /* ─── LANGUAGE BAR ──────────────────────────────────────── */
+    .lang-bar {
+      background: linear-gradient(90deg, var(--primary) 0%, #1d7dd6 100%);
+      padding: 12px 0;
+      color: #fff;
+      font-size: .88rem;
+    }
+    .lang-pill {
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      border-radius: 99px;
+      padding: 4px 14px;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lang-pill:hover, .lang-pill.active { background: #fff; color: var(--primary); }
+
+    /* ─── FEATURES ──────────────────────────────────────────── */
+    #features { padding: 96px 0; }
+    .feat-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      height: 100%;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .feat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: var(--transition);
+    }
+    .feat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(26,111,191,.13); }
+    .feat-card:hover::before { transform: scaleX(1); }
+    .feat-icon {
+      width: 54px; height: 54px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
+
+    /* ─── TABS NAV ──────────────────────────────────────────── */
+    #tools { padding: 96px 0; background: var(--surface); }
+    .tool-tabs {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0; margin-bottom: 40px;
+    }
+    .tool-tab {
+      padding: 12px 22px;
+      border-radius: 12px 12px 0 0;
+      border: 2px solid transparent;
+      border-bottom: none;
+      font-weight: 600;
+      font-size: .92rem;
+      cursor: pointer;
+      color: var(--text-soft);
+      background: transparent;
+      transition: var(--transition);
+      display: flex; align-items: center; gap: 8px;
+      position: relative;
+      bottom: -2px;
+    }
+    .tool-tab.active {
+      color: var(--primary);
+      border-color: var(--border);
+      border-bottom-color: var(--surface);
+      background: var(--surface);
+    }
+    .tool-tab:hover:not(.active) { color: var(--primary); background: var(--surface2); }
+    .tool-panel { display: none; }
+    .tool-panel.active { display: block; animation: fadeUp .4s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+
+    /* ─── TOOL 1: HEALTH TIME MACHINE ───────────────────────── */
+    .slider-wrap label { font-weight: 600; font-size: .9rem; color: var(--text); }
+    .slider-val {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--primary);
+      height: 6px;
+    }
+    .radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .radio-btn {
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg);
+      color: var(--text-soft);
+    }
+    .radio-btn.selected { border-color: var(--primary); background: var(--surface2); color: var(--primary); }
+    .score-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+    }
+    .score-big { font-family: 'DM Serif Display', serif; font-size: 3.2rem; line-height: 1; }
+    .progress-bar-custom {
+      height: 10px; border-radius: 99px;
+      background: var(--border); overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+    .risk-badge {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: .82rem;
+    }
+    .risk-low    { background: #d4f7ee; color: #0a7a5b; }
+    .risk-medium { background: #fff3cd; color: #8a6200; }
+    .risk-high   { background: #fde8e8; color: #b91c1c; }
+    .tip-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 10px;
+      font-size: .88rem;
+      margin-bottom: 8px;
+    }
+    .tip-icon { color: var(--accent); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+    /* ─── TOOL 2: SYMPTOM CHECKER ───────────────────────────── */
+    .symptom-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg);
+      color: var(--text-soft);
+      user-select: none;
+    }
+    .symptom-chip.selected { border-color: var(--primary); background: var(--surface2); color: var(--primary); }
+    .symptom-chip:hover { border-color: var(--primary); color: var(--primary); }
+    .diagnosis-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 12px;
+      transition: var(--transition);
+    }
+    .diagnosis-card:hover { box-shadow: var(--shadow); }
+    .action-emergency { color: #b91c1c; background: #fde8e8; border-color: #fca5a5; }
+    .action-doctor    { color: #92400e; background: #fef3c7; border-color: #fcd34d; }
+    .action-self      { color: #065f46; background: #d1fae5; border-color: #6ee7b7; }
+
+    /* ─── TOOL 3: HEALTH TRANSLATOR ─────────────────────────── */
+    .translator-input {
+      width: 100%;
+      min-height: 120px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .92rem;
+      resize: vertical;
+      transition: var(--transition);
+      background: var(--bg);
+      color: var(--text);
+    }
+    .translator-input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+    .trans-output {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      min-height: 140px;
+    }
+    .highlight-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: .8rem;
+      margin: 2px;
+    }
+    .pill-med  { background: #dbeafe; color: #1d4ed8; }
+    .pill-dose { background: #d1fae5; color: #065f46; }
+    .pill-time { background: #fef3c7; color: #92400e; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 700; flex-shrink: 0;
+    }
+    .understand-toggle {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .88rem;
+      color: var(--primary);
+    }
+    .toggle-switch {
+      width: 40px; height: 22px;
+      background: var(--border);
+      border-radius: 99px; position: relative;
+      transition: var(--transition);
+    }
+    .toggle-switch.on { background: var(--accent); }
+    .toggle-knob {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: var(--transition);
+    }
+    .toggle-switch.on .toggle-knob { left: 21px; }
+
+    /* ─── ABOUT / INCLUSIVITY ───────────────────────────────── */
+    #about { padding: 96px 0; }
+    .inclusion-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+      height: 100%;
+      transition: var(--transition);
+    }
+    .inclusion-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    /* ─── TESTIMONIALS ──────────────────────────────────────── */
+    #testimonials { padding: 80px 0; background: var(--surface); }
+    .testi-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      height: 100%;
+    }
+    .stars { color: #f59e0b; font-size: .9rem; }
+    .avatar-circle {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem; color: #fff;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,.75);
+      padding: 56px 0 28px;
+    }
+    footer .brand { color: #fff; }
+    .footer-link { color: rgba(255,255,255,.6); font-size: .88rem; display: block; margin-bottom: 8px; transition: var(--transition); }
+    .footer-link:hover { color: var(--accent); }
+    .footer-divider { border-color: rgba(255,255,255,.1); margin: 28px 0 20px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(255,255,255,.1);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-size: .95rem;
+      transition: var(--transition);
+    }
+    .social-btn:hover { background: var(--primary); color: #fff; }
+
+    /* ─── MOBILE NAV TOGGLE ─────────────────────────────────── */
+    .nav-toggler {
+      background: var(--surface2); border: none; border-radius: 8px;
+      padding: 7px 10px; color: var(--primary); font-size: 1.1rem; cursor: pointer;
+    }
+    .nav-mobile {
+      display: none; flex-direction: column; gap: 6px;
+      padding: 16px; background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .nav-mobile.open { display: flex; }
+
+    /* ─── EMERGENCY BANNER ──────────────────────────────────── */
+    .emergency-bar {
+      background: var(--accent2);
+      color: #fff;
+      text-align: center;
+      padding: 9px;
+      font-size: .83rem;
+      font-weight: 600;
+    }
+    .emergency-bar a { color: #fff; font-weight: 700; text-decoration: underline; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media(max-width:768px){
+      .hero-stats { gap: 20px; }
+      .tool-tabs { gap: 6px; }
+      .tool-tab { padding: 9px 13px; font-size: .82rem; }
+      .nav-links-desktop { display: none !important; }
+    }
+    @media(min-width:769px){
+      .nav-toggler { display: none; }
+    }
+
+    /* ─── LOADING SPINNER ───────────────────────────────────── */
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── ACTIVE SECTION HIGHLIGHT ──────────────────────────── */
+    .section-wave {
+      width: 100%; overflow: hidden; line-height: 0;
+    }
+    .section-wave svg { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ EMERGENCY BAR ════════════════════════════════════════ -->
+<div class="emergency-bar">
+  🚨 Emergency? Call <a href="tel:108">108</a> (Ambulance) &nbsp;|&nbsp; <a href="tel:104">104</a> (Health Helpline) &nbsp;|&nbsp; <a href="tel:100">100</a> (Police)
+</div>
+
+<!-- ═══ NAVBAR ════════════════════════════════════════════════ -->
+<nav class="navbar-custom">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a href="#hero" class="brand">
+      <i class="bi bi-heart-pulse-fill" style="color:var(--accent)"></i>
+      HealthMate <span class="brand-dot"></span>
+    </a>
+    <!-- Desktop links -->
+    <div class="d-flex align-items-center gap-2 nav-links-desktop">
+      <a href="#hero"         class="nav-link-custom active">Home</a>
+      <a href="#features"     class="nav-link-custom">Features</a>
+      <a href="#tools"        class="nav-link-custom">Tools</a>
+      <a href="#about"        class="nav-link-custom">About</a>
+      <a href="#testimonials" class="nav-link-custom">Reviews</a>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <!-- Language switcher -->
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ta" onclick="setLang('ta')">தமிழ்</button>
+      <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिंदी</button>
+      <button class="nav-toggler d-md-none" onclick="toggleMobileNav()"><i class="bi bi-list"></i></button>
+    </div>
+  </div>
+  <!-- Mobile nav -->
+  <div class="nav-mobile" id="mobileNav">
+    <a href="#hero"         class="nav-link-custom" onclick="closeMobileNav()">Home</a>
+    <a href="#features"     class="nav-link-custom" onclick="closeMobileNav()">Features</a>
+    <a href="#tools"        class="nav-link-custom" onclick="closeMobileNav()">Tools</a>
+    <a href="#about"        class="nav-link-custom" onclick="closeMobileNav()">About</a>
+    <a href="#testimonials" class="nav-link-custom" onclick="closeMobileNav()">Reviews</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <!-- Left -->
+      <div class="col-lg-6 fade-in">
+        <div class="hero-badge">✦ Inclusive · Preventive · Accessible</div>
+        <h1 class="hero-title">
+          Your Smart<br><span>Health Support</span><br>Companion
+        </h1>
+        <p class="hero-sub" id="hero-sub-text">
+          Empowering patients, caregivers, elderly users, and busy professionals with AI-powered health tools — in English, Tamil, and Hindi.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#tools" class="btn-primary-custom"><i class="bi bi-activity"></i> Try Health Tools</a>
+          <a href="#features" class="btn-accent-custom"><i class="bi bi-info-circle"></i> Learn More</a>
+        </div>
+        <!-- Stats -->
+        <div class="hero-stats">
+          <div class="stat-box">
+            <div class="stat-num">3</div>
+            <div class="stat-lbl">Languages</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">3</div>
+            <div class="stat-lbl">Smart Tools</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">100%</div>
+            <div class="stat-lbl">Free Access</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">24/7</div>
+            <div class="stat-lbl">Available</div>
+          </div>
+        </div>
+      </div>
+      <!-- Right visual -->
+      <div class="col-lg-6 fade-in" style="transition-delay:.15s">
+        <div class="hero-visual d-flex flex-column align-items-center gap-4">
+          <!-- Animated health ring -->
+          <div class="health-ring">
+            <div class="ring-inner">
+              <div class="ring-score">72</div>
+              <div style="font-size:.72rem;color:var(--text-soft);font-weight:600">Health Score</div>
+            </div>
+          </div>
+          <div class="d-flex gap-3 flex-wrap justify-content-center">
+            <div class="hero-card-float">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="pulse-dot"></span>
+                <span style="font-size:.78rem;font-weight:700;color:var(--text-soft)">LIVE STATUS</span>
+              </div>
+              <div style="font-weight:700;color:var(--text)">Blood Pressure</div>
+              <div style="font-size:1.4rem;font-family:'DM Serif Display',serif;color:var(--primary)">120 <span style="font-size:.8rem">/ 80</span></div>
+              <div class="risk-badge risk-low mt-2">Normal</div>
+            </div>
+            <div class="hero-card-float">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-shield-check-fill" style="color:var(--accent)"></i>
+                <span style="font-size:.78rem;font-weight:700;color:var(--text-soft)">REMINDER</span>
+              </div>
+              <div style="font-weight:700;color:var(--text)">Medication</div>
+              <div style="font-size:.85rem;color:var(--text-soft)">Metformin 500mg</div>
+              <div style="font-size:.8rem;color:var(--accent);font-weight:600">⏰ 8:00 AM · After food</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LANGUAGE BAR ══════════════════════════════════════════ -->
+<div class="lang-bar">
+  <div class="container d-flex align-items-center gap-3 flex-wrap">
+    <span style="font-weight:600;opacity:.8">🌐 Available in:</span>
+    <button class="lang-pill active" onclick="setLang('en')">English</button>
+    <button class="lang-pill" onclick="setLang('ta')">தமிழ் (Tamil)</button>
+    <button class="lang-pill" onclick="setLang('hi')">हिंदी (Hindi)</button>
+    <span style="opacity:.7;font-size:.82rem;margin-left:auto">Making healthcare accessible for everyone →</span>
+  </div>
+</div>
+
+<!-- ═══ FEATURES ══════════════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="text-center mb-5 fade-in">
+      <span class="section-label">What We Offer</span>
+      <h2 class="section-title mt-1">Comprehensive Healthcare Support</h2>
+      <p class="section-sub mx-auto mt-2">Every feature designed with inclusivity, simplicity, and real-world health needs in mind.</p>
+    </div>
+    <div class="row g-4">
+      <!-- F1 -->
+      <div class="col-md-6 col-lg-3 fade-in">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:#dbeafe"><i class="bi bi-clock-history" style="color:#1d4ed8"></i></div>
+          <h5 style="font-family:'DM Serif Display',serif;margin-bottom:10px">Health Time Machine</h5>
+          <p style="font-size:.88rem;color:var(--text-soft)">Simulate your future health based on current lifestyle. Get a personalized score and improvement plan.</p>
+        </div>
+      </div>
+      <!-- F2 -->
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:.1s">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:#d1fae5"><i class="bi bi-search-heart" style="color:#065f46"></i></div>
+          <h5 style="font-family:'DM Serif Display',serif;margin-bottom:10px">Symptom Checker</h5>
+          <p style="font-size:.88rem;color:var(--text-soft)">Select symptoms and get possible diagnoses, severity rating, and action recommendations instantly.</p>
+        </div>
+      </div>
+      <!-- F3 -->
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:.2s">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:#fef3c7"><i class="bi bi-translate" style="color:#92400e"></i></div>
+          <h5 style="font-family:'DM Serif Display',serif;margin-bottom:10px">Prescription Translator</h5>
+          <p style="font-size:.88rem;color:var(--text-soft)">Paste your prescription or report — get a simplified, multilingual breakdown with dosage and timing.</p>
+        </div>
+      </div>
+      <!-- F4 -->
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:.3s">
+        <div class="feat-card">
+          <div class="feat-icon" style="background:#fce7f3"><i class="bi bi-people-fill" style="color:#9d174d"></i></div>
+          <h5 style="font-family:'DM Serif Display',serif;margin-bottom:10px">Inclusive by Design</h5>
+          <p style="font-size:.88rem;color:var(--text-soft)">Built for elderly users, rural communities, family caregivers, and busy professionals across India.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOOLS SECTION ═════════════════════════════════════════ -->
+<section id="tools">
+  <div class="container">
+    <div class="text-center mb-5 fade-in">
+      <span class="section-label">Interactive Tools</span>
+      <h2 class="section-title mt-1">Your Personal Health Dashboard</h2>
+      <p class="section-sub mx-auto mt-2">Three powerful tools — no sign-up needed. Use them anytime, anywhere.</p>
+    </div>
+
+    <!-- Tab buttons -->
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="switchTab('htmachine')">
+        <i class="bi bi-clock-history"></i>
+        <span class="d-none d-sm-inline">Health Time Machine</span>
+        <span class="d-sm-none">Time Machine</span>
+      </button>
+      <button class="tool-tab" onclick="switchTab('symptom')">
+        <i class="bi bi-search-heart"></i>
+        <span class="d-none d-sm-inline">Symptom Checker</span>
+        <span class="d-sm-none">Symptoms</span>
+      </button>
+      <button class="tool-tab" onclick="switchTab('translator')">
+        <i class="bi bi-translate"></i>
+        <span class="d-none d-sm-inline">Prescription Translator</span>
+        <span class="d-sm-none">Translator</span>
+      </button>
+    </div>
+
+    <!-- ── TOOL 1: HEALTH TIME MACHINE ─────────────────────── -->
+    <div class="tool-panel active" id="panel-htmachine">
+      <div class="row g-4">
+        <!-- Inputs -->
+        <div class="col-lg-5">
+          <div class="card-glass p-4">
+            <h5 style="font-family:'DM Serif Display',serif;margin-bottom:20px">
+              <i class="bi bi-sliders" style="color:var(--primary)"></i> Your Lifestyle Inputs
+            </h5>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:.88rem">Age</label>
+              <input type="number" id="ht-age" class="form-control" value="30" min="10" max="90"
+                style="border-color:var(--border);border-radius:10px;font-size:.9rem"/>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:.88rem">Weight (kg)</label>
+              <input type="number" id="ht-weight" class="form-control" value="70" min="30" max="200"
+                style="border-color:var(--border);border-radius:10px;font-size:.9rem"/>
+            </div>
+
+            <div class="mb-3 slider-wrap">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label>Sleep Hours / Night</label>
+                <span class="slider-val" id="sleep-val">7h</span>
+              </div>
+              <input type="range" id="ht-sleep" min="3" max="10" value="7"
+                oninput="document.getElementById('sleep-val').textContent=this.value+'h'"/>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:.88rem">Exercise Level</label>
+              <div class="radio-group" id="exercise-group">
+                <div class="radio-btn selected" onclick="selectRadio('exercise-group',this,'none')">None</div>
+                <div class="radio-btn" onclick="selectRadio('exercise-group',this,'low')">Low</div>
+                <div class="radio-btn" onclick="selectRadio('exercise-group',this,'moderate')">Moderate</div>
+                <div class="radio-btn" onclick="selectRadio('exercise-group',this,'high')">High</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:.88rem">Food Habits</label>
+              <div class="radio-group" id="food-group">
+                <div class="radio-btn" onclick="selectRadio('food-group',this,'healthy')">Healthy</div>
+                <div class="radio-btn selected" onclick="selectRadio('food-group',this,'average')">Average</div>
+                <div class="radio-btn" onclick="selectRadio('food-group',this,'unhealthy')">Unhealthy</div>
+              </div>
+            </div>
+
+            <div class="mb-4 slider-wrap">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label>Stress Level</label>
+                <span class="slider-val" id="stress-val">5</span>
+              </div>
+              <input type="range" id="ht-stress" min="1" max="10" value="5"
+                oninput="document.getElementById('stress-val').textContent=this.value"/>
+            </div>
+
+            <button class="btn-primary-custom w-100" onclick="simulateFuture()" id="sim-btn">
+              <i class="bi bi-lightning-charge-fill"></i> Simulate Future Health
+            </button>
+          </div>
+        </div>
+
+        <!-- Output -->
+        <div class="col-lg-7" id="ht-output" style="display:none">
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <div class="score-card">
+                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-soft);margin-bottom:8px">Current Score</div>
+                <div class="score-big" id="current-score" style="color:var(--primary)">–</div>
+                <div class="progress-bar-custom mt-2">
+                  <div class="progress-fill" id="current-bar" style="width:0%;background:var(--primary)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="score-card">
+                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-soft);margin-bottom:8px">Future Score</div>
+                <div class="score-big" id="future-score" style="color:var(--accent2)">–</div>
+                <div class="progress-bar-custom mt-2">
+                  <div class="progress-fill" id="future-bar" style="width:0%;background:var(--accent2)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Risk -->
+          <div class="card-glass p-3 mb-3 d-flex align-items-center gap-3">
+            <i class="bi bi-shield-exclamation fs-4" style="color:var(--primary)"></i>
+            <div>
+              <div style="font-size:.78rem;font-weight:700;color:var(--text-soft)">RISK LEVEL</div>
+              <span class="risk-badge" id="risk-badge">–</span>
+            </div>
+            <div class="ms-auto text-end">
+              <div style="font-size:.78rem;font-weight:700;color:var(--text-soft)">IF IMPROVED</div>
+              <div class="score-big" id="improved-score" style="font-size:1.8rem;color:var(--accent)">–</div>
+            </div>
+          </div>
+          <!-- Tips -->
+          <div class="card-glass p-3">
+            <div style="font-weight:700;margin-bottom:12px;font-size:.95rem">
+              <i class="bi bi-lightbulb-fill" style="color:#f59e0b"></i> Personalised Improvement Tips
+            </div>
+            <div id="tips-container"></div>
+          </div>
+        </div>
+
+        <!-- Placeholder when not yet simulated -->
+        <div class="col-lg-7 d-flex align-items-center justify-content-center" id="ht-placeholder">
+          <div class="text-center py-5" style="color:var(--text-soft)">
+            <i class="bi bi-clock-history" style="font-size:3rem;opacity:.3"></i>
+            <p class="mt-3" style="font-size:.9rem">Fill in your details and click <strong>Simulate</strong> to see your health future.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TOOL 2: SYMPTOM CHECKER ─────────────────────────── -->
+    <div class="tool-panel" id="panel-symptom">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="card-glass p-4">
+            <h5 style="font-family:'DM Serif Display',serif;margin-bottom:6px">
+              <i class="bi bi-search-heart" style="color:var(--accent)"></i> Select Your Symptoms
+            </h5>
+            <p style="font-size:.82rem;color:var(--text-soft);margin-bottom:18px">Tap all that apply. This is not a substitute for professional medical advice.</p>
+            <div id="symptom-chips" class="d-flex flex-wrap gap-2 mb-4">
+              <!-- chips injected by JS -->
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn-primary-custom flex-fill" onclick="checkSymptoms()">
+                <i class="bi bi-search"></i> Analyse Symptoms
+              </button>
+              <button class="btn-accent-custom" onclick="clearSymptoms()" title="Clear"><i class="bi bi-x-circle"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7" id="symptom-output">
+          <div class="text-center py-5" style="color:var(--text-soft)">
+            <i class="bi bi-heart-pulse" style="font-size:3rem;opacity:.3"></i>
+            <p class="mt-3" style="font-size:.9rem">Select symptoms and press <strong>Analyse</strong> to see results.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TOOL 3: PRESCRIPTION TRANSLATOR ────────────────── -->
+    <div class="tool-panel" id="panel-translator">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="card-glass p-4">
+            <h5 style="font-family:'DM Serif Display',serif;margin-bottom:6px">
+              <i class="bi bi-translate" style="color:#92400e"></i> Paste Prescription / Report
+            </h5>
+            <p style="font-size:.82rem;color:var(--text-soft);margin-bottom:16px">Enter any medical text and we'll simplify it for you.</p>
+            <textarea class="translator-input mb-3" id="trans-input" placeholder="e.g. Tab. Metformin 500mg BD AC. Cap. Amlodipine 5mg OD HS. Inj. Insulin 10U SC BD..."></textarea>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:.88rem">Translate to</label>
+              <div class="radio-group" id="trans-lang-group">
+                <div class="radio-btn selected" onclick="selectRadio('trans-lang-group',this,'en')">English</div>
+                <div class="radio-btn" onclick="selectRadio('trans-lang-group',this,'ta')">தமிழ்</div>
+                <div class="radio-btn" onclick="selectRadio('trans-lang-group',this,'hi')">हिंदी</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn-primary-custom flex-fill" onclick="translatePrescription()">
+                <i class="bi bi-magic"></i> Simplify &amp; Translate
+              </button>
+              <button class="btn-accent-custom" onclick="loadSample()" title="Load sample"><i class="bi bi-clipboard-plus"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="card-glass p-4" id="trans-output-wrap" style="display:none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 style="font-family:'DM Serif Display',serif;margin:0">Simplified Explanation</h6>
+              <div class="understand-toggle" id="understand-toggle" onclick="toggleSimpler()">
+                <span>Even Simpler?</span>
+                <div class="toggle-switch" id="tog-sw"><div class="toggle-knob"></div></div>
+              </div>
+            </div>
+            <div id="trans-output"></div>
+          </div>
+          <div class="text-center py-5" id="trans-placeholder" style="color:var(--text-soft)">
+            <i class="bi bi-file-medical" style="font-size:3rem;opacity:.3"></i>
+            <p class="mt-3" style="font-size:.9rem">Paste a prescription or click <strong>Load sample</strong> to try.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT / INCLUSIVITY ═══════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5 fade-in">
+        <span class="section-label">Our Mission</span>
+        <h2 class="section-title mt-1">Healthcare That Leaves No One Behind</h2>
+        <p style="color:var(--text-soft);margin-top:16px">
+          HealthMate was built because quality healthcare information shouldn't be locked behind language barriers, technical complexity, or urban privilege. We believe every person — young or old, rural or urban — deserves clear, accessible, and actionable health support.
+        </p>
+        <div class="mt-4 d-flex flex-column gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:38px;height:38px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="bi bi-translate" style="color:var(--primary)"></i></div>
+            <span style="font-size:.9rem;font-weight:500">Regional language support — Tamil, Hindi, English</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:38px;height:38px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="bi bi-person-heart" style="color:var(--primary)"></i></div>
+            <span style="font-size:.9rem;font-weight:500">Designed for elderly users and those with low digital literacy</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:38px;height:38px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="bi bi-shield-check" style="color:var(--primary)"></i></div>
+            <span style="font-size:.9rem;font-weight:500">No data stored. 100% private &amp; free to use</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 fade-in" style="transition-delay:.15s">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="inclusion-card">
+              <i class="bi bi-person-wheelchair fs-2 mb-3" style="color:var(--primary)"></i>
+              <h6 style="font-family:'DM Serif Display',serif">Elderly & Differently Abled</h6>
+              <p style="font-size:.82rem;color:var(--text-soft)">Large text, simple language, and guided flows tailored for seniors.</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="inclusion-card">
+              <i class="bi bi-house-heart fs-2 mb-3" style="color:var(--accent)"></i>
+              <h6 style="font-family:'DM Serif Display',serif">Rural Communities</h6>
+              <p style="font-size:.82rem;color:var(--text-soft)">Works on low-bandwidth connections. Offline-friendly design.</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="inclusion-card">
+              <i class="bi bi-people fs-2 mb-3" style="color:#9d174d"></i>
+              <h6 style="font-family:'DM Serif Display',serif">Family Caregivers</h6>
+              <p style="font-size:.82rem;color:var(--text-soft)">Monitor loved ones' health scores and get reminders easily.</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="inclusion-card">
+              <i class="bi bi-briefcase fs-2 mb-3" style="color:#92400e"></i>
+              <h6 style="font-family:'DM Serif Display',serif">Busy Professionals</h6>
+              <p style="font-size:.82rem;color:var(--text-soft)">Quick tools designed for check-ins under 2 minutes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ══════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="container">
+    <div class="text-center mb-5 fade-in">
+      <span class="section-label">Voices of Trust</span>
+      <h2 class="section-title mt-1">What Our Users Say</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 fade-in">
+        <div class="testi-card">
+          <div class="stars mb-2">★★★★★</div>
+          <p style="font-size:.88rem;color:var(--text-soft);margin-bottom:16px">"The prescription translator helped my mother understand her diabetes medication in Tamil. She finally takes the right dosage at the right time!"</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:var(--primary)">SR</div>
+            <div><div style="font-weight:700;font-size:.88rem">Suresh R.</div><div style="font-size:.78rem;color:var(--text-soft)">Chennai, Tamil Nadu</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 fade-in" style="transition-delay:.1s">
+        <div class="testi-card">
+          <div class="stars mb-2">★★★★★</div>
+          <p style="font-size:.88rem;color:var(--text-soft);margin-bottom:16px">"Health Time Machine gave me a wake-up call. I scored 48 and after following the tips for 3 months, I feel genuinely better. Amazing tool!"</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:var(--accent)">PK</div>
+            <div><div style="font-weight:700;font-size:.88rem">Priya K.</div><div style="font-size:.78rem;color:var(--text-soft)">Bengaluru, Karnataka</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 fade-in" style="transition-delay:.2s">
+        <div class="testi-card">
+          <div class="stars mb-2">★★★★☆</div>
+          <p style="font-size:.88rem;color:var(--text-soft);margin-bottom:16px">"हिंदी में लक्षण जाँच बहुत उपयोगी रही। गाँव में डॉक्टर तक जाने से पहले यह जानना जरूरी था कि क्या हो रहा है।"</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:#9d174d">AM</div>
+            <div><div style="font-weight:700;font-size:.88rem">Anil M.</div><div style="font-size:.78rem;color:var(--text-soft)">Varanasi, Uttar Pradesh</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="row g-4 mb-4">
+      <div class="col-lg-4">
+        <div class="brand mb-3">
+          <i class="bi bi-heart-pulse-fill" style="color:var(--accent)"></i> HealthMate
+        </div>
+        <p style="font-size:.85rem;opacity:.7;max-width:280px">Your inclusive health companion. Empowering every Indian to access quality health information — in their language.</p>
+        <div class="mt-3 d-flex gap-2">
+          <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div style="font-weight:700;color:#fff;margin-bottom:14px;font-size:.88rem">Tools</div>
+        <a href="#tools" class="footer-link" onclick="switchTab('htmachine')">Health Time Machine</a>
+        <a href="#tools" class="footer-link" onclick="switchTab('symptom')">Symptom Checker</a>
+        <a href="#tools" class="footer-link" onclick="switchTab('translator')">Prescription Translator</a>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div style="font-weight:700;color:#fff;margin-bottom:14px;font-size:.88rem">Information</div>
+        <a href="#features" class="footer-link">Features</a>
+        <a href="#about" class="footer-link">About Us</a>
+        <a href="#testimonials" class="footer-link">Reviews</a>
+      </div>
+      <div class="col-lg-4">
+        <div style="font-weight:700;color:#fff;margin-bottom:14px;font-size:.88rem">Emergency Numbers 🇮🇳</div>
+        <div style="font-size:.83rem;opacity:.75;line-height:2">
+          🚑 Ambulance: <strong style="color:var(--accent)">108</strong><br>
+          🏥 Health Helpline: <strong style="color:var(--accent)">104</strong><br>
+          👮 Police: <strong style="color:var(--accent)">100</strong><br>
+          🔥 Fire: <strong style="color:var(--accent)">101</strong><br>
+          👩‍⚕️ Women Helpline: <strong style="color:var(--accent)">1091</strong>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider"/>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span style="font-size:.8rem;opacity:.55">© 2025 HealthMate. All rights reserved. This tool is for informational purposes only and is not a substitute for professional medical advice.</span>
+      <span style="font-size:.8rem;opacity:.55">Made with ❤️ for India</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ JAVASCRIPT ════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ── DATA ─────────────────────────────────────────────────── */
+
+// Symptom database
+const SYMPTOMS = [
+  'Fever','Headache','Fatigue','Cough','Chest Pain','Sore Throat',
+  'Runny Nose','Body Ache','Nausea','Vomiting','Diarrhoea','Shortness of Breath',
+  'Dizziness','Rash','Stomach Pain','Back Pain','Loss of Appetite','Chills'
+];
+
+const SYMPTOM_RULES = [
+  {
+    conditions: ['Fever','Cough','Sore Throat','Runny Nose','Body Ache'],
+    match: 3,
+    name: 'Common Cold / Flu',
+    severity: 'Low–Medium',
+    action: 'self',
+    actionText: 'Self-care recommended. Rest, hydrate, and monitor.',
+    icon: '🤧'
+  },
+  {
+    conditions: ['Fever','Chills','Body Ache','Fatigue','Headache'],
+    match: 3,
+    name: 'Possible Viral Infection',
+    severity: 'Medium',
+    action: 'doctor',
+    actionText: 'Consult a doctor if fever > 3 days or symptoms worsen.',
+    icon: '🦠'
+  },
+  {
+    conditions: ['Chest Pain','Shortness of Breath','Dizziness','Fatigue'],
+    match: 2,
+    name: 'Cardiac / Respiratory Concern',
+    severity: 'High',
+    action: 'emergency',
+    actionText: 'Seek emergency care immediately. Call 108.',
+    icon: '❤️‍🩹'
+  },
+  {
+    conditions: ['Headache','Nausea','Dizziness','Vomiting'],
+    match: 2,
+    name: 'Migraine / Vertigo',
+    severity: 'Low–Medium',
+    action: 'doctor',
+    actionText: 'Rest in a dark room. Consult a doctor if recurrent.',
+    icon: '🧠'
+  },
+  {
+    conditions: ['Stomach Pain','Nausea','Vomiting','Diarrhoea','Loss of Appetite'],
+    match: 2,
+    name: 'Gastroenteritis',
+    severity: 'Low–Medium',
+    action: 'self',
+    actionText: 'Stay hydrated. ORS recommended. Doctor if > 2 days.',
+    icon: '🫀'
+  },
+  {
+    conditions: ['Cough','Shortness of Breath','Chest Pain','Fatigue'],
+    match: 2,
+    name: 'Respiratory Infection',
+    severity: 'Medium–High',
+    action: 'doctor',
+    actionText: 'Consult a doctor promptly, especially if breathing is laboured.',
+    icon: '🫁'
+  },
+  {
+    conditions: ['Back Pain','Fatigue','Body Ache'],
+    match: 2,
+    name: 'Musculoskeletal Strain',
+    severity: 'Low',
+    action: 'self',
+    actionText: 'Rest, warm compress. See a physio if pain persists.',
+    icon: '🦴'
+  }
+];
+
+// Prescription samples
+const PRESCRIPTION_SAMPLES = [
+  'Tab. Metformin 500mg BD AC. Cap. Amlodipine 5mg OD HS. Tab. Atorvastatin 10mg OD HS. Inj. Insulin 10U SC BD before meals.',
+  'Syp. Amoxicillin 250mg/5ml TDS for 5 days. Tab. Paracetamol 500mg SOS. Cap. Vitamin D3 60000IU weekly.'
+];
+
+// Translation snippets (simplified)
+const TRANS = {
+  en: {
+    intro: 'Here is a simplified breakdown of your prescription:',
+    understand_q: 'Here is a much simpler version:',
+    labels: { med:'Medicine', dose:'Dose', time:'When to take', note:'Note' }
+  },
+  ta: {
+    intro: 'உங்கள் மருந்து சீட்டின் எளிய விளக்கம்:',
+    understand_q: 'இன்னும் எளிமையான விளக்கம்:',
+    labels: { med:'மருந்து', dose:'அளவு', time:'எப்போது', note:'குறிப்பு' }
+  },
+  hi: {
+    intro: 'आपके नुस्खे का सरल विवरण:',
+    understand_q: 'और भी आसान भाषा में:',
+    labels: { med:'दवाई', dose:'खुराक', time:'कब लें', note:'नोट' }
+  }
+};
+
+// Common abbreviations
+const ABBREV = {
+  'OD':'Once daily','BD':'Twice daily','TDS':'Three times a day','QID':'Four times a day',
+  'AC':'Before food','PC':'After food','HS':'At bedtime','SOS':'When needed',
+  'SC':'Under the skin (injection)','IV':'Intravenous','IM':'Intramuscular',
+  'Tab.':'Tablet','Cap.':'Capsule','Syp.':'Syrup','Inj.':'Injection',
+  'mg':'milligram','ml':'millilitre','IU':'International Units'
+};
+
+/* ── STATE ─────────────────────────────────────────────────── */
+let currentLang      = 'en';
+let selectedExercise = 'none';
+let selectedFood     = 'average';
+let selectedTransLang= 'en';
+let simplerMode      = false;
+let lastTransData    = null;
+
+/* ── INIT ──────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderSymptomChips();
+  initScrollFade();
+});
+
+/* ── NAV ───────────────────────────────────────────────────── */
+function toggleMobileNav() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+function closeMobileNav() {
+  document.getElementById('mobileNav').classList.remove('open');
+}
+
+/* ── LANGUAGE ──────────────────────────────────────────────── */
+const LANG_CONTENT = {
+  en: {
+    heroSub: 'Empowering patients, caregivers, elderly users, and busy professionals with AI-powered health tools — in English, Tamil, and Hindi.'
+  },
+  ta: {
+    heroSub: 'நோயாளிகள், பராமரிப்பாளர்கள், முதியோர் மற்றும் பணிமேலாளர்களுக்கு ஆரோக்கிய கருவிகள் — தமிழ், ஹிந்தி மற்றும் ஆங்கிலத்தில்.'
+  },
+  hi: {
+    heroSub: 'मरीजों, देखभाल करने वालों, बुजुर्गों और व्यस्त पेशेवरों को स्वास्थ्य उपकरण — हिंदी, तमिल और अंग्रेजी में।'
+  }
+};
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset?.lang === lang));
+  document.getElementById('hero-sub-text').textContent = LANG_CONTENT[lang].heroSub;
+}
+
+/* ── TABS ──────────────────────────────────────────────────── */
+function switchTab(id) {
+  document.querySelectorAll('.tool-tab').forEach((t,i) => {
+    const ids = ['htmachine','symptom','translator'];
+    t.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── RADIO BUTTONS ─────────────────────────────────────────── */
+function selectRadio(groupId, el, val) {
+  document.querySelectorAll('#' + groupId + ' .radio-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  if (groupId === 'exercise-group')  selectedExercise  = val;
+  if (groupId === 'food-group')      selectedFood      = val;
+  if (groupId === 'trans-lang-group')selectedTransLang = val;
+}
+
+/* ── SCROLL FADE ───────────────────────────────────────────── */
+function initScrollFade() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+}
+
+/* ═══ TOOL 1: HEALTH TIME MACHINE ════════════════════════════ */
+function simulateFuture() {
+  const btn   = document.getElementById('sim-btn');
+  btn.innerHTML = '<span class="spinner"></span> Calculating...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const age    = parseInt(document.getElementById('ht-age').value)    || 30;
+    const weight = parseInt(document.getElementById('ht-weight').value) || 70;
+    const sleep  = parseInt(document.getElementById('ht-sleep').value);
+    const stress = parseInt(document.getElementById('ht-stress').value);
+
+    // ── Score algorithm ──────────────────────────────────────
+    let score = 100;
+
+    // Age factor
+    if (age > 60) score -= 12;
+    else if (age > 45) score -= 7;
+    else if (age > 35) score -= 3;
+
+    // BMI (rough) — using weight only as proxy
+    if (weight > 100) score -= 12;
+    else if (weight > 85) score -= 6;
+    else if (weight < 45) score -= 5;
+
+    // Sleep
+    if (sleep < 5)      score -= 18;
+    else if (sleep < 7) score -= 8;
+    else if (sleep > 9) score -= 4;
+
+    // Exercise
+    const exMap = { none: -18, low: -8, moderate: 0, high: 5 };
+    score += (exMap[selectedExercise] || 0);
+
+    // Food
+    const foodMap = { healthy: 5, average: -4, unhealthy: -16 };
+    score += (foodMap[selectedFood] || 0);
+
+    // Stress
+    score -= Math.round((stress - 1) * 2.2);
+
+    const currentScore = Math.max(15, Math.min(99, score));
+
+    // Future (10yr projection — decline depends on habits)
+    const habitPenalty = (exMap[selectedExercise] < 0 ? 6 : 0)
+                       + (foodMap[selectedFood]   < 0 ? 6 : 0)
+                       + (sleep < 7 ? 5 : 0)
+                       + (stress > 7 ? 5 : 0);
+    const futureScore  = Math.max(10, currentScore - habitPenalty - Math.round(age * 0.05));
+
+    // Improvement tips & improved score
+    const tips = [];
+    let improvement = 0;
+    if (sleep < 7)                         { tips.push({ icon:'🌙', text:'Increase sleep to at least 7–8 hours per night.' }); improvement += 8; }
+    if (selectedExercise === 'none')       { tips.push({ icon:'🏃', text:'Start exercising at least 3 times a week for 30 minutes.' }); improvement += 10; }
+    else if (selectedExercise === 'low')   { tips.push({ icon:'🏃', text:'Increase exercise frequency to moderate level for better results.' }); improvement += 5; }
+    if (selectedFood === 'unhealthy')      { tips.push({ icon:'🥗', text:'Replace processed food with fruits, vegetables, and whole grains.' }); improvement += 10; }
+    else if (selectedFood === 'average')   { tips.push({ icon:'🥗', text:'Add more fresh vegetables and reduce sugar intake.' }); improvement += 4; }
+    if (stress > 7)                        { tips.push({ icon:'🧘', text:'Practice relaxation techniques: deep breathing, yoga, or meditation.' }); improvement += 7; }
+    else if (stress > 5)                   { tips.push({ icon:'🧘', text:'Manage stress with short walks or mindfulness exercises.' }); improvement += 3; }
+    if (weight > 90)                       { tips.push({ icon:'⚖️', text:'Work towards a healthy weight through diet and moderate exercise.' }); improvement += 5; }
+    if (age > 40)                          { tips.push({ icon:'🩺', text:'Schedule annual health check-ups including BP, blood sugar, and cholesterol.' }); improvement += 3; }
+    if (tips.length === 0)                 { tips.push({ icon:'🌟', text:'Excellent lifestyle! Keep maintaining your healthy habits.' }); }
+
+    const improvedScore = Math.min(99, futureScore + improvement);
+
+    // Risk level
+    let risk, riskClass;
+    if (futureScore >= 70)     { risk = 'Low Risk';    riskClass = 'risk-low'; }
+    else if (futureScore >= 50){ risk = 'Medium Risk'; riskClass = 'risk-medium'; }
+    else                       { risk = 'High Risk';   riskClass = 'risk-high'; }
+
+    // ── Render ───────────────────────────────────────────────
+    document.getElementById('current-score').textContent = currentScore;
+    document.getElementById('future-score').textContent  = futureScore;
+    document.getElementById('improved-score').textContent= improvedScore;
+
+    const riskBadge = document.getElementById('risk-badge');
+    riskBadge.textContent = risk;
+    riskBadge.className   = 'risk-badge ' + riskClass;
+
+    setTimeout(() => {
+      document.getElementById('current-bar').style.width = currentScore + '%';
+      document.getElementById('future-bar').style.width  = futureScore + '%';
+      const col = futureScore >= 70 ? 'var(--accent)' : futureScore >= 50 ? '#f59e0b' : 'var(--accent2)';
+      document.getElementById('future-bar').style.background = col;
+      document.getElementById('future-score').style.color    = col;
+    }, 100);
+
+    const tipsHTML = tips.map(t => `
+      <div class="tip-item">
+        <span class="tip-icon">${t.icon}</span>
+        <span>${t.text}</span>
+      </div>`).join('');
+    document.getElementById('tips-container').innerHTML = tipsHTML;
+
+    document.getElementById('ht-placeholder').style.display = 'none';
+    document.getElementById('ht-output').style.display      = 'block';
+
+    btn.innerHTML = '<i class="bi bi-lightning-charge-fill"></i> Simulate Future Health';
+    btn.disabled  = false;
+  }, 900);
+}
+
+/* ═══ TOOL 2: SYMPTOM CHECKER ════════════════════════════════ */
+function renderSymptomChips() {
+  const container = document.getElementById('symptom-chips');
+  container.innerHTML = SYMPTOMS.map(s => `
+    <div class="symptom-chip" onclick="toggleSymptom(this)" data-symptom="${s}">
+      <i class="bi bi-circle-fill" style="font-size:.45rem"></i> ${s}
+    </div>`).join('');
+}
+
+function toggleSymptom(el) {
+  el.classList.toggle('selected');
+}
+
+function clearSymptoms() {
+  document.querySelectorAll('.symptom-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('symptom-output').innerHTML = `
+    <div class="text-center py-5" style="color:var(--text-soft)">
+      <i class="bi bi-heart-pulse" style="font-size:3rem;opacity:.3"></i>
+      <p class="mt-3" style="font-size:.9rem">Select symptoms and press <strong>Analyse</strong> to see results.</p>
+    </div>`;
+}
+
+function checkSymptoms() {
+  const selected = [...document.querySelectorAll('.symptom-chip.selected')].map(c => c.dataset.symptom);
+  if (selected.length === 0) {
+    alert('Please select at least one symptom.');
+    return;
+  }
+
+  const matches = SYMPTOM_RULES
+    .map(rule => {
+      const overlap = rule.conditions.filter(c => selected.includes(c));
+      return { ...rule, matched: overlap.length, matchedSymptoms: overlap };
+    })
+    .filter(r => r.matched >= r.match)
+    .sort((a, b) => b.matched - a.matched)
+    .slice(0, 3);
+
+  const actionStyles = {
+    emergency: 'action-emergency',
+    doctor:    'action-doctor',
+    self:      'action-self'
+  };
+  const actionIcons = { emergency: 'bi-exclamation-triangle-fill', doctor: 'bi-hospital', self: 'bi-house-heart' };
+
+  let html = `<div style="font-weight:700;margin-bottom:14px;font-size:.92rem">
+    <i class="bi bi-clipboard2-pulse" style="color:var(--primary)"></i>
+    Possible Conditions for: <span style="color:var(--primary)">${selected.join(', ')}</span>
+  </div>`;
+
+  if (matches.length === 0) {
+    html += `<div class="diagnosis-card"><p style="font-size:.88rem;color:var(--text-soft)">No strong pattern found. If symptoms persist, please consult a doctor.</p></div>`;
+  } else {
+    matches.forEach(m => {
+      html += `
+      <div class="diagnosis-card ${actionStyles[m.action]}">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <span style="font-size:1.3rem">${m.icon}</span>
+            <strong style="margin-left:6px;font-size:.95rem">${m.name}</strong>
+          </div>
+          <span class="risk-badge ${m.severity.includes('High') ? 'risk-high' : m.severity.includes('Low') ? 'risk-low' : 'risk-medium'}">
+            ${m.severity} Severity
+          </span>
+        </div>
+        <p style="font-size:.82rem;margin-top:8px;margin-bottom:6px;opacity:.8">Matched symptoms: ${m.matchedSymptoms.join(', ')}</p>
+        <div class="d-flex align-items-center gap-2 mt-2" style="font-size:.85rem;font-weight:600">
+          <i class="bi ${actionIcons[m.action]}"></i> ${m.actionText}
+        </div>
+      </div>`;
+    });
+  }
+
+  html += `<div style="font-size:.75rem;color:var(--text-soft);margin-top:8px">
+    ⚠️ This is an informational tool only. It does not replace professional medical diagnosis.
+  </div>`;
+
+  document.getElementById('symptom-output').innerHTML = html;
+}
+
+/* ═══ TOOL 3: PRESCRIPTION TRANSLATOR ═══════════════════════ */
+function loadSample() {
+  document.getElementById('trans-input').value = PRESCRIPTION_SAMPLES[0];
+}
+
+function parseEntry(line) {
+  // Extract drug type, name, dose, frequency, timing from a line
+  const freq = Object.keys(ABBREV).find(k => line.includes(k) && ['OD','BD','TDS','QID','SOS'].includes(k));
+  const timing = Object.keys(ABBREV).find(k => line.includes(k) && ['AC','PC','HS','SC','IV','IM'].includes(k));
+  const doseMatch = line.match(/(\d+(?:\.\d+)?)\s*(mg|ml|IU|U|mcg)/i);
+  const typeMatch = line.match(/^(Tab\.|Cap\.|Syp\.|Inj\.)\s*/);
+  const nameMatch = line.replace(/^(Tab\.|Cap\.|Syp\.|Inj\.)\s*/,'').split(/\s+/)[0];
+  return {
+    type:   typeMatch ? ABBREV[typeMatch[0].trim()] || typeMatch[0] : 'Medicine',
+    name:   nameMatch || 'Unknown',
+    dose:   doseMatch ? doseMatch[0] : '–',
+    freq:   ABBREV[freq] || freq || '–',
+    timing: ABBREV[timing] || timing || '–'
+  };
+}
+
+function translatePrescription() {
+  const raw  = document.getElementById('trans-input').value.trim();
+  if (!raw) { alert('Please enter a prescription or click Load Sample.'); return; }
+
+  const lang = selectedTransLang;
+  const t    = TRANS[lang];
+
+  // Parse lines
+  const lines = raw.split('.').map(l => l.trim()).filter(l => l.length > 3);
+
+  lastTransData = { lines, lang };
+  simplerMode = false;
+  document.getElementById('tog-sw').classList.remove('on');
+
+  renderTransOutput(lines, lang, false);
+
+  document.getElementById('trans-output-wrap').style.display = 'block';
+  document.getElementById('trans-placeholder').style.display  = 'none';
+}
+
+function renderTransOutput(lines, lang, simpler) {
+  const t = TRANS[lang];
+  let html = `<p style="font-size:.88rem;color:var(--text-soft);margin-bottom:16px">${simpler ? t.understand_q : t.intro}</p>`;
+
+  lines.forEach((line, i) => {
+    const entry = parseEntry(line);
+    if (simpler) {
+      html += `
+      <div class="step-item">
+        <div class="step-num">${i+1}</div>
+        <div>
+          <strong>${entry.name}</strong><br>
+          <span style="font-size:.82rem;color:var(--text-soft)">
+            ${lang === 'ta' ? `${entry.dose} — ${entry.freq} — ${entry.timing}` :
+              lang === 'hi' ? `${entry.dose} — ${entry.freq} — ${entry.timing}` :
+              `Take ${entry.dose}, ${entry.freq}, ${entry.timing}`}
+          </span>
+        </div>
+      </div>`;
+    } else {
+      html += `
+      <div class="step-item">
+        <div class="step-num">${i+1}</div>
+        <div>
+          <span class="highlight-pill pill-med">${t.labels.med}: ${entry.name}</span>
+          <span class="highlight-pill pill-dose">${t.labels.dose}: ${entry.dose}</span>
+          <span class="highlight-pill pill-time">${t.labels.time}: ${entry.timing}</span>
+          <br><span style="font-size:.8rem;color:var(--text-soft);display:block;margin-top:4px">
+            ${entry.freq}
+          </span>
+        </div>
+      </div>`;
+    }
+  });
+
+  document.getElementById('trans-output').innerHTML = html;
+}
+
+function toggleSimpler() {
+  simplerMode = !simplerMode;
+  document.getElementById('tog-sw').classList.toggle('on', simplerMode);
+  if (lastTransData) {
+    renderTransOutput(lastTransData.lines, lastTransData.lang, simplerMode);
+  }
+}
+</script>
+</body>
+</html>
