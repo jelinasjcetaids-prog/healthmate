@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthMate – Your Smart Health Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#0F3D3E;
+    --teal-700:#155255;
+    --marigold-500:#E8871E;
+    --marigold-600:#C96E10;
+    --parchment:#FBF7EF;
+    --ink:#1B2A2A;
+    --sage:#7FA99B;
+    --line:#DDD3C2;
+    --white:#FFFFFF;
+    --danger:#B23A2F;
+    --radius-card:14px;
+    --radius-pill:999px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,h4,h5{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 .4em 0;
+    color:var(--teal-900);
+    line-height:1.15;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+  .btn{
+    display:inline-block;
+    padding:13px 28px;
+    border-radius:var(--radius-pill);
+    font-weight:600;
+    font-size:15px;
+    border:2px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform .15s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--marigold-500);color:var(--white);}
+  .btn-primary:hover{background:var(--marigold-600);}
+  .btn-ghost{background:transparent;border-color:var(--teal-900);color:var(--teal-900);}
+  .btn-ghost:hover{background:var(--teal-900);color:var(--white);}
+
+  /* header */
+  header.site{
+    position:sticky;top:0;z-index:40;
+    background:rgba(251,247,239,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
+  .brand{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--teal-900);}
+  .brand span{color:var(--marigold-500);}
+  .nav-links{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-weight:500;}
+  .nav-links a{text-decoration:none;color:var(--ink);}
+  .nav-links a:hover{color:var(--marigold-600);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  select#langSelect{
+    border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:inherit;background:var(--white);
+  }
+
+  /* emergency bar */
+  .emergency-bar{background:var(--danger);color:var(--white);}
+  .emergency-bar .wrap{display:flex;align-items:center;justify-content:space-between;padding:8px 24px;font-size:14px;font-weight:500;}
+  .emergency-bar a{color:var(--white);text-decoration:underline;}
+
+  /* hero */
+  .hero{padding:72px 0 60px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
+  .eyebrow{color:var(--marigold-600);font-weight:600;font-size:14px;margin-bottom:10px;}
+  .hero h1{font-size:44px;max-width:520px;}
+  .hero p.lead{max-width:480px;color:#3d4c4c;font-size:17px;}
+  .hero-ctas{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap;}
+  .stat-row{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap;}
+  .stat-row div{font-size:13px;color:#5a6b6b;}
+  .stat-row strong{display:block;font-family:'Fraunces',serif;font-size:20px;color:var(--teal-900);}
+
+  .dashboard-card{
+    background:var(--white);
+    border-radius:var(--radius-card);
+    border:1px solid var(--line);
+    padding:26px;
+    box-shadow:0 18px 40px -20px rgba(15,61,62,.25);
+  }
+  .dashboard-card .live{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--sage);text-transform:none;margin-bottom:6px;}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:#2E9E5B;display:inline-block;}
+  .score-big{font-family:'Fraunces',serif;font-size:48px;color:var(--teal-900);}
+  .score-bar{height:8px;background:#EFE8D8;border-radius:6px;overflow:hidden;margin:10px 0 22px;}
+  .score-bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--sage),var(--teal-700));}
+  .mini-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;}
+  .mini-metrics div{border-top:1px solid var(--line);padding-top:10px;}
+  .mini-metrics strong{display:block;color:var(--teal-900);font-size:15px;}
+
+  /* sections */
+  section{padding:70px 0;}
+  .section-head{max-width:620px;margin:0 auto 44px;text-align:center;}
+  .section-head .eyebrow{display:block;}
+  .section-head h2{font-size:32px;}
+  .section-head p{color:#4c5c5c;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .feature-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:28px;
+  }
+  .feature-card .icon{font-size:30px;margin-bottom:14px;}
+  .feature-card h3{font-size:19px;}
+  .feature-card p{font-size:14.5px;color:#4c5c5c;}
+  .feature-tags{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .feature-tags span{font-size:12px;background:#EFE8D8;padding:5px 10px;border-radius:var(--radius-pill);color:var(--teal-900);}
+
+  /* tools */
+  .tools-panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:0;overflow:hidden;}
+  .tab-row{display:flex;border-bottom:1px solid var(--line);}
+  .tab-btn{
+    flex:1;padding:18px 12px;background:transparent;border:none;cursor:pointer;
+    font-family:'Work Sans',sans-serif;font-weight:600;font-size:14.5px;color:#5a6b6b;
+    border-bottom:3px solid transparent;
+  }
+  .tab-btn.active{color:var(--teal-900);border-bottom-color:var(--marigold-500);background:#FCFAF4;}
+  .tab-panel{display:none;padding:34px;}
+  .tab-panel.active{display:block;}
+  .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  label{display:block;font-weight:600;font-size:13.5px;margin:16px 0 6px;color:var(--teal-900);}
+  label:first-child{margin-top:0;}
+  input[type="text"],input[type="number"],select,textarea{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-family:inherit;font-size:14.5px;background:var(--parchment);
+  }
+  input[type="range"]{width:100%;}
+  .range-val{font-weight:600;color:var(--marigold-600);}
+  .radio-group{display:flex;gap:10px;flex-wrap:wrap;}
+  .radio-pill{
+    border:1px solid var(--line);border-radius:var(--radius-pill);padding:9px 16px;font-size:13.5px;cursor:pointer;background:var(--parchment);
+  }
+  .radio-pill input{display:none;}
+  .radio-pill.selected{background:var(--teal-900);color:var(--white);border-color:var(--teal-900);}
+  .diet-options label.diet-line{display:flex;align-items:center;gap:8px;font-weight:400;margin:8px 0;color:var(--ink);}
+  .symptom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .symptom-pill{
+    border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;background:var(--parchment);font-size:13.5px;
+  }
+  .symptom-pill.selected{background:var(--marigold-500);color:var(--white);border-color:var(--marigold-500);}
+  .result-box{background:var(--parchment);border:1px dashed var(--line);border-radius:12px;padding:22px;min-height:120px;font-size:14.5px;}
+  .result-box h4{margin-bottom:8px;color:var(--teal-900);}
+  .disclaimer{font-size:12.5px;color:#7a6a52;margin-top:14px;}
+  .sample-links{display:flex;gap:10px;margin-bottom:10px;}
+  .sample-links button{background:none;border:none;color:var(--marigold-600);font-weight:600;font-size:13px;cursor:pointer;padding:0;}
+
+  /* why */
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+  .why-card{padding:20px 4px;}
+  .why-card .icon{font-size:26px;}
+  .why-card h4{font-size:16px;}
+  .why-card p{font-size:13.5px;color:#4c5c5c;}
+
+  .impact-strip{background:var(--teal-900);color:var(--white);border-radius:18px;padding:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+  .impact-strip strong{display:block;font-family:'Fraunces',serif;font-size:30px;color:var(--marigold-500);}
+  .impact-strip span{font-size:13px;opacity:.85;}
+
+  footer{border-top:1px solid var(--line);padding:50px 0 26px;font-size:13.5px;color:#5a6b6b;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.3fr;gap:30px;}
+  footer h5{color:var(--teal-900);font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;margin-bottom:10px;}
+  footer a{text-decoration:none;color:#5a6b6b;display:block;margin-bottom:6px;}
+  footer a:hover{color:var(--marigold-600);}
+  .foot-bottom{border-top:1px solid var(--line);margin-top:30px;padding-top:18px;text-align:center;font-size:12.5px;}
+
+  @media(max-width:860px){
+    .hero-grid,.features-grid,.tool-grid,.why-grid{grid-template-columns:1fr;}
+    .symptom-grid{grid-template-columns:repeat(2,1fr);}
+    .impact-strip{grid-template-columns:1fr 1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .nav-links{display:none;}
+    .hero h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="emergency-bar">
+  <div class="wrap">
+    <span>Emergency? Call <a href="tel:108">108</a> (Ambulance) immediately if in danger.</span>
+    <span>Police <a href="tel:100">100</a> · Fire <a href="tel:101">101</a> · Health Helpline <a href="tel:104">104</a></span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <div class="brand">Health<span>Mate</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <select id="langSelect" aria-label="Select language">
+        <option value="en">🇬🇧 English</option>
+        <option value="ta">🇮🇳 தமிழ்</option>
+        <option value="hi">🇮🇳 हिंदी</option>
+      </select>
+      <a class="btn btn-primary" href="#tools">Try for Free →</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">AI-Powered Preventive Healthcare</div>
+      <h1>Your smart health companion</h1>
+      <p class="lead">Predict your health future, understand your prescriptions, and act before it's too late — powered by intelligent AI for every Indian family.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#tools">Start Health Check</a>
+        <a class="btn btn-ghost" href="#features">Explore Features</a>
+      </div>
+      <div class="stat-row">
+        <div><strong>3</strong>AI Tools</div>
+        <div><strong>3</strong>Languages</div>
+        <div><strong>100%</strong>Free to Use</div>
+        <div><strong>24/7</strong>Available</div>
+      </div>
+    </div>
+    <div class="dashboard-card">
+      <div class="live"><span class="dot"></span>LIVE · Your Health Score</div>
+      <div class="score-big">78 <span style="font-size:18px;color:#7a8a8a;">/ 100</span></div>
+      <div class="score-bar"><span style="width:78%;"></span></div>
+      <div class="mini-metrics">
+        <div><strong>7.5 hrs</strong>Sleep Quality</div>
+        <div><strong>Moderate</strong>Activity Level</div>
+        <div><strong>Good</strong>Diet Score</div>
+        <div><strong>AI Analyzed</strong>Status</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Key Features</span>
+      <h2>Three innovations, one platform</h2>
+      <p>HealthMate combines predictive AI, symptom analysis, and prescription translation to give you comprehensive preventive healthcare.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🧠</div>
+        <h3>Health Time Machine</h3>
+        <p>Enter your details and current lifestyle habits and instantly see your future health score, personalised to you.</p>
+        <div class="feature-tags"><span>Future Prediction</span><span>Improvement Tips</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+        <h3>AI Symptom Checker</h3>
+        <p>Select your symptoms and receive intelligent analysis including possible conditions, severity assessment, and next steps.</p>
+        <div class="feature-tags"><span>Condition Analysis</span><span>Severity Score</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌍</div>
+        <h3>Prescription Translator</h3>
+        <p>Paste any complex prescription or medical text and receive a simple, step-by-step explanation in 3 languages.</p>
+        <div class="feature-tags"><span>3 Languages</span><span>Step-by-Step</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Interactive Tools</span>
+      <h2>Try your health tools now</h2>
+      <p>No sign-up required. Explore all three AI-powered tools completely free.</p>
+    </div>
+
+    <div class="tools-panel">
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="timeMachine">Health Time Machine</button>
+        <button class="tab-btn" data-tab="symptomChecker">Symptom Checker</button>
+        <button class="tab-btn" data-tab="rxTranslator">Prescription Translator</button>
+      </div>
+
+      <!-- Health Time Machine -->
+      <div class="tab-panel active" id="timeMachine">
+        <div class="tool-grid">
+          <div>
+            <h4>🧠 Health Time Machine</h4>
+            <p style="font-size:13.5px;color:#4c5c5c;">Enter your details to see your health future.</p>
+
+            <label for="tmName">Name</label>
+            <input type="text" id="tmName" placeholder="e.g. Priya Kumar">
+
+            <label>Gender</label>
+            <div class="radio-group" id="tmGender">
+              <label class="radio-pill selected"><input type="radio" name="gender" value="female" checked>Female</label>
+              <label class="radio-pill"><input type="radio" name="gender" value="male">Male</label>
+              <label class="radio-pill"><input type="radio" name="gender" value="other">Other</label>
+            </div>
+
+            <label for="tmAge">Age: <span class="range-val" id="tmAgeVal">30</span> years</label>
+            <input type="range" id="tmAge" min="10" max="90" value="30">
+
+            <label for="tmWeight">Weight: <span class="range-val" id="tmWeightVal">70</span> kg</label>
+            <input type="range" id="tmWeight" min="30" max="150" value="70">
+
+            <label for="tmSleep">Sleep Hours/Day: <span class="range-val" id="tmSleepVal">7</span> hrs</label>
+            <input type="range" id="tmSleep" min="2" max="12" value="7">
+
+            <label for="tmExercise">Exercise (days/week): <span class="range-val" id="tmExerciseVal">3</span> days</label>
+            <input type="range" id="tmExercise" min="0" max="7" value="3">
+
+            <label for="tmDiet">Diet Quality</label>
+            <select id="tmDiet">
+              <option value="4">Excellent (Lots of fruits, vegetables)</option>
+              <option value="3" selected>Good (Balanced meals)</option>
+              <option value="2">Average (Some junk food)</option>
+              <option value="1">Poor (Mostly processed food)</option>
+            </select>
+
+            <label for="tmStress">Stress Level: <span class="range-val" id="tmStressVal">5</span> / 10</label>
+            <input type="range" id="tmStress" min="1" max="10" value="5">
+
+            <div style="margin-top:22px;">
+              <button class="btn btn-primary" id="tmSimulate">Simulate My Health Future</button>
+            </div>
+          </div>
+          <div>
+            <div class="result-box" id="tmResult">
+              Fill in your details and click <strong>Simulate My Health Future</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Symptom Checker -->
+      <div class="tab-panel" id="symptomChecker">
+        <h4>🤖 AI Symptom Checker</h4>
+        <p style="font-size:13.5px;color:#4c5c5c;">Select all symptoms you are currently experiencing.</p>
+        <div class="symptom-grid" id="symptomGrid">
+          <div class="symptom-pill" data-symptom="Headache">🤕 Headache</div>
+          <div class="symptom-pill" data-symptom="Fever">🌡️ Fever</div>
+          <div class="symptom-pill" data-symptom="Cough">😷 Cough</div>
+          <div class="symptom-pill" data-symptom="Fatigue">😴 Fatigue</div>
+          <div class="symptom-pill" data-symptom="Nausea">🤢 Nausea</div>
+          <div class="symptom-pill" data-symptom="Chest Pain">💔 Chest Pain</div>
+          <div class="symptom-pill" data-symptom="Sore Throat">😫 Sore Throat</div>
+          <div class="symptom-pill" data-symptom="Body Ache">🦴 Body Ache</div>
+          <div class="symptom-pill" data-symptom="Dizziness">😵 Dizziness</div>
+          <div class="symptom-pill" data-symptom="Breathing Difficulty">🫁 Breathing Difficulty</div>
+          <div class="symptom-pill" data-symptom="Stomach Pain">🤧 Stomach Pain</div>
+          <div class="symptom-pill" data-symptom="Runny Nose">🤧 Runny Nose</div>
+        </div>
+        <div style="margin-top:22px;">
+          <button class="btn btn-primary" id="scAnalyse">Analyse Symptoms</button>
+        </div>
+        <div class="result-box" id="scResult" style="margin-top:18px;">
+          Select your symptoms above, then click <strong>Analyse Symptoms</strong>.
+        </div>
+        <p class="disclaimer">This tool is for educational purposes only. Always consult a licensed doctor for medical advice.</p>
+      </div>
+
+      <!-- Prescription Translator -->
+      <div class="tab-panel" id="rxTranslator">
+        <div class="tool-grid">
+          <div>
+            <h4>🌍 Prescription Translator</h4>
+            <p style="font-size:13.5px;color:#4c5c5c;">Paste medical text or a prescription to get a simple explanation.</p>
+            <div class="sample-links">
+              <button type="button" id="sample1">Sample 1</button>
+              <button type="button" id="sample2">Sample 2</button>
+            </div>
+            <label for="rxInput">Prescription / Medical Text</label>
+            <textarea id="rxInput" rows="6" placeholder="Paste prescription text here..."></textarea>
+            <label for="rxLang">Output Language</label>
+            <select id="rxLang">
+              <option value="en">🇬🇧 English</option>
+              <option value="ta">🇮🇳 Tamil</option>
+              <option value="hi">🇮🇳 Hindi</option>
+            </select>
+            <div style="margin-top:22px;">
+              <button class="btn btn-primary" id="rxTranslate">Translate Prescription</button>
+            </div>
+          </div>
+          <div>
+            <div class="result-box" id="rxResult">
+              Your simplified prescription will appear here.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why HealthMate</span>
+      <h2>Healthcare that understands you</h2>
+      <p>Most healthcare systems wait until you're sick. HealthMate flips this model — helping you understand, predict, and prevent before problems arise.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><div class="icon">🛡️</div><h4>Preventive-First Approach</h4><p>Identify health risks weeks or months before they become emergencies.</p></div>
+      <div class="why-card"><div class="icon">🌐</div><h4>Rural & Multilingual Access</h4><p>Available in English, Tamil and Hindi so healthcare understanding reaches every corner of India.</p></div>
+      <div class="why-card"><div class="icon">👴</div><h4>Built for Every Age</h4><p>Large fonts, simple language, and step-by-step instructions for every user.</p></div>
+      <div class="why-card"><div class="icon">⚡</div><h4>Instant, No Sign-Up</h4><p>No registration, no data collection. Just open and use — anywhere.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <
